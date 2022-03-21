@@ -1,8 +1,8 @@
-import time, threading, random, string, httpx, itertools, os
+import time, threading, random, string, httpx, itertools, os, json
 from colorama import Fore, init; init()
 from module import mail, captcha
 
-__proxy__, __invite__, __lock__ = itertools.cycle(open('./data/proxies.txt', 'r+').read().splitlines()), '19HGFnBR', threading.Lock()
+__proxy__, __username__, __lock__, __config__ = itertools.cycle(open('./data/proxies.txt', 'r+').read().splitlines()), itertools.cycle(open('./data/usernames.txt', 'r+').read().splitlines()), threading.Lock(), json.load(open('./config.json'))
 
 class Console:
     @staticmethod
@@ -10,6 +10,15 @@ class Console:
         __lock__.acquire()
         print(content + Fore.RESET)
         __lock__.release()
+    
+    @staticmethod
+    def print_logo():
+        os.system('cls && title github.com/its-vichy')
+        print('''
+    ┬─┐┌─┐┬  ┬┌─┐┬ ┌┬┐  ┌─┐┌─┐┌┐┌
+    ├┬┘├┤ └┐┌┘│ ││  │───│ ┬├┤ │││
+    ┴└─└─┘ └┘ └─┘┴─┘┴   └─┘└─┘┘└┘
+        ''')
 
 class GeneratorThread(threading.Thread):
     def __init__(self):
@@ -53,10 +62,13 @@ class GeneratorThread(threading.Thread):
             return r.json()['token']
 
     def complete(self):
-        self.session.post('https://api.revolt.chat/onboard/complete', json={'username': ''.join(random.choice(string.ascii_lowercase) for _ in range(15))})
+        self.session.post('https://api.revolt.chat/onboard/complete', json={'username': ''.join(random.choice(string.ascii_lowercase) for _ in range(15)) if __config__['random_username'] else next(__username__)})
 
     def join_server(self):
-        self.session.post(f'https://api.revolt.chat/invites/{__invite__}')
+        invite_code = __config__["invite_code"]
+
+        if invite_code != '':
+            self.session.post(f'https://api.revolt.chat/invites/{invite_code}')
 
     def run(self):
         captcha_key = self.solve_captcha()
@@ -78,10 +90,10 @@ class GeneratorThread(threading.Thread):
 
 
 if __name__ == '__main__':
-    os.system('cls')
+    Console.print_logo()
 
     while True:
-        if threading.active_count() >= 100:
+        if threading.active_count() >= __config__['threads']:
             time.sleep(1)
 
         GeneratorThread().start()
