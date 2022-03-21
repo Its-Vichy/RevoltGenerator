@@ -8,7 +8,7 @@
 
 -----
 
-- Change your invite code in main.py, thread to.
+- Config settings in `config.json` then put your usernames / proxies.
 - If you need help join our [telegram](https://vu.fr/rca-discord)
 
 -----
@@ -17,7 +17,7 @@
 - [X] **Email:Pass:Token and Token format**
 - [X] **AI Hcaptcha solver**
 - [X] **Email verification using Tempmail**
-- [ ] **Username from file**
+- [X] **Username from file**
 - [ ] **Remove / change PFP**
 
 -----
