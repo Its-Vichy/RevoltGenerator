@@ -11,6 +11,8 @@
 - Config settings in `config.json` then put your usernames / proxies.
 - If you need help join our [telegram](https://vu.fr/rca-discord)
 
+- Hcap lib: https://github.com/h0nde/py-hcaptcha
+
 -----
 
 - [X] **Proxy support - HTTP/S**
