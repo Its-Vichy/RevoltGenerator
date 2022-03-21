@@ -17,7 +17,6 @@
 - [X] **Email:Pass:Token and Token format**
 - [X] **AI Hcaptcha solver**
 - [X] **Email verification using Tempmail**
-- [X] **Delete all Dm channel**
 - [ ] **Username from file**
 - [ ] **Remove / change PFP**
 
